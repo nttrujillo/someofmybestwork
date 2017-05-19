@@ -1,0 +1,591 @@
+---
+title: "Working Research Paper"
+output: word_document
+---
+```{r Main Code}
+df <- read.csv("Urate.csv")
+require("astsa")
+library(astsa)
+require("tseries")
+library(tseries)
+x <- df$Value
+z <- df$CPI
+x = as.ts(x, start = 1948, end = 2017, frequency = 12)
+z = as.ts(z, start = 1948, end = 2017, frequency = 12)
+
+plot.ts(x)
+plot.ts(z)
+y = cbind(x,z)
+lag1.plot(x,max.lag = 12)
+fit1 = arima(x, order = c(1,0,0))
+fit2 = arima(x, order = c(2,0,0))
+fit3 = arima(x, order = c(3,0,0))
+fit4 = arima(x, order = c(4,0,0))
+AICEstimate <- AIC(fit1,fit2,fit3,fit4)
+lowest <- min(AICEstimate)
+fit1 = sarima(x,1,0,0)
+
+
+acf(x, main = "ACF of US Unemployment 1948-2017")
+plot.ts(x , main = "US Unemployment 1948-2017" , xlab = "TIME" , ylab = "UNEMPLOYMENT RATE" )
+plot.ts(log(x) , main = "Logged US Unemployment 1948-2017" , xlab = "TIME" , ylab = "UNEMPLOYMENT RATE" )
+plot.ts(diff(log(x)) , main = "Differenced Log US Unemployment 1948-2017" , xlab = "TIME" , ylab = "UNEMPLOYMENT RATE" )
+
+plot(diff(x), main="Differenced US Unemployment 1948-2017", xlab = "TIME", ylab = "DIFFERENCED UNEMPLOYMENT RATE" )
+
+
+acf(diff(x), main = "ACF of Differenced US Unemployment 1948-2017")
+
+fit00 = arima(x, order = c(0,0,0))
+fit10 = arima(x, order = c(1,0,0))
+fit20 = arima(x, order = c(2,0,0))
+fit30 = arima(x, order = c(3,0,0))
+fit40 = arima(x, order = c(4,0,0))
+
+fit01 = arima(x, order = c(0,0,1))
+fit02 = arima(x, order = c(0,0,2))
+fit03 = arima(x, order = c(0,0,3))
+fit04 = arima(x, order = c(0,0,4))
+AIC(fit00,fit10,fit20,fit30,fit40,fit01,fit02,fit03,fit04)
+
+fit11 = arima(x, order = c(1,0,1))
+fit12 = arima(x, order = c(1,0,2))
+fit13 = arima(x, order = c(1,0,3))
+fit14 = arima(x, order = c(1,0,4))
+
+fit21 = arima(x, order = c(2,0,1))
+fit22 = arima(x, order = c(2,0,2))
+fit23 = arima(x, order = c(2,0,3))
+fit24 = arima(x, order = c(2,0,4))
+
+fit31 = arima(x, order = c(3,0,1))
+fit32 = arima(x, order = c(3,0,2))
+fit33 = arima(x, order = c(3,0,3))
+fit34 = arima(x, order = c(3,0,4))
+
+fit41 = arima(x, order = c(4,0,1))
+fit42 = arima(x, order = c(4,0,2))
+fit43 = arima(x, order = c(4,0,3))
+fit44 = arima(x, order = c(4,0,4))
+
+AIC(fit00,fit10,fit20,fit30,fit40,fit01,fit02,fit03,fit04,fit11,fit12,fit13,fit14,fit21,fit22,fit23,fit24,fit31,fit32,fit33,fit34,fit41,fit42,fit43,fit44)
+
+BIC(fit00,fit10,fit20,fit30,fit40,fit01,fit02,fit03,fit04,fit11,fit12,fit13,fit14,fit21,fit22,fit23,fit24,fit31,fit32,fit33,fit34,fit41,fit42,fit43,fit44)
+
+fitarch01 = garch(x, order = c(0,1))
+fitarch02 = garch(x, order = c(0,2))
+fitarch03 = garch(x, order = c(0,3))
+fitarch04 = garch(x, order = c(0,4))
+
+fitgarch11 = garch(x, order = c(1,1))
+fitgarch12 = garch(x, order = c(1,2))
+fitgarch13 = garch(x, order = c(1,3))
+fitgarch14 = garch(x, order = c(1,4))
+
+fitgarch21 = garch(x, order = c(2,1))
+fitgarch22 = garch(x, order = c(2,2))
+fitgarch23 = garch(x, order = c(2,3))
+fitgarch24= garch(x, order = c(2,4))
+
+AIC(fit00,fit10,fit20,fit30,fit40,fit01,fit02,fit03,fit04,fit11,fit12,fit13,fit14,fit21,fit22,fit23,fit24,fit31,fit32,fit33,fit34,fit41,fit42,fit43,fit44,fitarch01,fitarch02,fitarch03,fitarch04,fitgarch11,fitgarch12,fitgarch13,fitgarch14,fitgarch21,fitgarch22,fitgarch23,fitgarch24)
+
+
+fit010 = arima(x, order = c(0,1,0))
+fit110 = arima(x, order = c(1,1,0))
+fit210 = arima(x, order = c(2,1,0))
+fit310 = arima(x, order = c(3,1,0))
+fit410 = arima(x, order = c(4,1,0))
+
+fit011 = arima(x, order = c(0,1,1))
+fit012 = arima(x, order = c(0,1,2))
+fit013 = arima(x, order = c(0,1,3))
+fit014 = arima(x, order = c(0,1,4))
+
+
+fit111 = arima(x, order = c(1,1,1))
+fit112 = arima(x, order = c(1,1,2))
+fit113 = arima(x, order = c(1,1,3))
+fit114 = arima(x, order = c(1,1,4))
+
+fit211 = arima(x, order = c(2,1,1))
+fit212 = arima(x, order = c(2,1,2))
+fit213 = arima(x, order = c(2,1,3))
+fit214 = arima(x, order = c(2,1,4))
+
+fit311 = arima(x, order = c(3,1,1))
+fit312 = arima(x, order = c(3,1,2))
+fit313 = arima(x, order = c(3,1,3))
+fit314 = arima(x, order = c(3,1,4))
+
+fit411 = arima(x, order = c(4,1,1))
+fit412 = arima(x, order = c(4,1,2))
+fit413 = arima(x, order = c(4,1,3))
+fit414 = arima(x, order = c(4,1,4))
+
+AIC(fit00,fit10,fit20,fit30,fit40,fit01,fit02,fit03,fit04,fit11,fit12,fit13,fit14,fit21,fit22,fit23,fit24,fit31,fit32,fit33,fit34,fit41,fit42,fit43,fit44,fitarch01,fitarch02,fitarch03,fitarch04,fitgarch11,fitgarch12,fitgarch13,fitgarch14,fitgarch21,fitgarch22,fitgarch23,fitgarch24)
+
+
+AIC(fit010,fit110,fit210,fit310,fit410,fit011,fit012,fit013,fit014,fit111,fit112,fit113,fit114,fit211,fit212,fit213,fit214,fit311,fit312,fit313,fit314,fit411,fit412,fit413,fit414)
+
+
+
+
+
+
+
+
+
+```
+
+
+
+```{r SAR(12)}
+
+
+
+#Fitting SARIMA only using a seasonal AR
+
+sarima(x,0,0,0,0,0,0,S=12)
+sarima(x,1,0,0,1,0,0,S=12)
+sarima(x,2,0,0,1,0,0,S=12)
+sarima(x,3,0,0,1,0,0,S=12)
+sarima(x,4,0,0,1,0,0,S=12)
+
+sarima(x,0,0,1,1,0,0,S=12)
+sarima(x,0,0,2,1,0,0,S=12)
+sarima(x,0,0,3,1,0,0,S=12)
+sarima(x,0,0,4,1,0,0,S=12)
+
+sarima(x,1,0,1,1,0,0,S=12)
+sarima(x,1,0,2,1,0,0,S=12)
+sarima(x,1,0,3,1,0,0,S=12)
+sarima(x,1,0,4,1,0,0,S=12)
+
+sarima(x,2,0,1,1,0,0,S=12)
+sarima(x,2,0,2,1,0,0,S=12)
+sarima(x,2,0,3,1,0,0,S=12)
+sarima(x,2,0,4,1,0,0,S=12)
+
+sarima(x,3,0,1,1,0,0,S=12)
+sarima(x,3,0,2,1,0,0,S=12)
+sarima(x,3,0,3,1,0,0,S=12)
+sarima(x,3,0,4,1,0,0,S=12)
+
+sarima(x,4,0,1,1,0,0,S=12)
+sarima(x,4,0,2,1,0,0,S=12)
+sarima(x,4,0,3,1,0,0,S=12)
+sarima(x,4,0,4,1,0,0,S=12)
+
+
+
+```
+
+
+
+```{r SMA(12)}
+
+sarima(x,0,0,0,0,0,1,S=12)
+sarima(x,1,0,0,0,0,1,S=12)
+sarima(x,2,0,0,0,0,1,S=12)
+sarima(x,3,0,0,0,0,1,S=12)
+sarima(x,4,0,0,0,0,1,S=12)
+
+sarima(x,0,0,1,0,0,1,S=12)
+sarima(x,0,0,2,0,0,1,S=12)
+sarima(x,0,0,3,0,0,1,S=12)
+sarima(x,0,0,4,0,0,1,S=12)
+
+sarima(x,1,0,1,0,0,1,S=12)
+sarima(x,1,0,2,0,0,1,S=12)
+sarima(x,1,0,3,0,0,1,S=12)
+sarima(x,1,0,4,0,0,1,S=12)
+
+sarima(x,2,0,1,0,0,1,S=12)
+sarima(x,2,0,2,0,0,1,S=12)
+sarima(x,2,0,3,0,0,1,S=12)
+sarima(x,2,0,4,0,0,1,S=12)
+
+sarima(x,3,0,1,0,0,1,S=12)
+sarima(x,3,0,2,0,0,1,S=12)
+sarima(x,3,0,3,0,0,1,S=12)
+sarima(x,3,0,4,0,0,1,S=12)
+
+sarima(x,4,0,1,0,0,1,S=12)
+sarima(x,4,0,2,0,0,1,S=12)
+sarima(x,4,0,3,0,0,1,S=12)
+sarima(x,4,0,4,0,0,1,S=12)
+
+```
+
+```{r SARMA(12,12)}
+
+sarima(x,0,0,0,1,0,1,S=12)
+sarima(x,1,0,0,1,0,1,S=12)
+sarima(x,2,0,0,1,0,1,S=12)
+sarima(x,3,0,0,1,0,1,S=12)
+sarima(x,4,0,0,1,0,1,S=12)
+
+sarima(x,0,0,1,1,0,1,S=12)
+sarima(x,0,0,2,1,0,1,S=12)
+sarima(x,0,0,3,1,0,1,S=12)
+sarima(x,0,0,4,1,0,1,S=12)
+
+sarima(x,1,0,1,1,0,1,S=12)
+sarima(x,1,0,2,1,0,1,S=12)
+sarima(x,1,0,3,1,0,1,S=12)
+sarima(x,1,0,4,1,0,1,S=12)
+
+sarima(x,2,0,1,1,0,1,S=12)
+sarima(x,2,0,2,1,0,1,S=12)
+sarima(x,2,0,3,1,0,1,S=12)
+sarima(x,2,0,4,1,0,1,S=12)
+
+sarima(x,3,0,1,1,0,1,S=12)
+sarima(x,3,0,2,1,0,1,S=12)
+sarima(x,3,0,3,1,0,1,S=12)
+sarima(x,3,0,4,1,0,1,S=12)
+
+sarima(x,4,0,1,1,0,1,S=12)
+sarima(x,4,0,2,1,0,1,S=12)
+sarima(x,4,0,3,1,0,1,S=12)
+sarima(x,4,0,4,1,0,1,S=12)
+
+
+```
+
+```{r arimaSAR(p,d,q,P)}
+
+sarima(x,0,1,0,0,0,0,S=12)
+sarima(x,1,1,0,1,0,0,S=12)
+sarima(x,2,1,0,1,0,0,S=12)
+sarima(x,3,1,0,1,0,0,S=12)
+sarima(x,4,1,0,1,0,0,S=12)
+
+sarima(x,0,1,1,1,0,0,S=12)
+sarima(x,0,1,2,1,0,0,S=12)
+sarima(x,0,1,3,1,0,0,S=12)
+sarima(x,0,1,4,1,0,0,S=12)
+
+sarima(x,1,1,1,1,0,0,S=12)
+sarima(x,1,1,2,1,0,0,S=12)
+sarima(x,1,1,3,1,0,0,S=12)
+sarima(x,1,1,4,1,0,0,S=12)
+
+sarima(x,2,1,1,1,0,0,S=12)
+sarima(x,2,1,2,1,0,0,S=12)
+sarima(x,2,1,3,1,0,0,S=12)
+sarima(x,2,1,4,1,0,0,S=12)
+
+sarima(x,3,1,1,1,0,0,S=12)
+sarima(x,3,1,2,1,0,0,S=12)
+sarima(x,3,1,3,1,0,0,S=12)
+sarima(x,3,1,4,1,0,0,S=12)
+
+sarima(x,4,1,1,1,0,0,S=12)
+sarima(x,4,1,2,1,0,0,S=12)
+sarima(x,4,1,3,1,0,0,S=12)
+sarima(x,4,1,4,1,0,0,S=12)
+
+
+```
+
+
+```{r arimaSMA(p,d,q,Q)}
+
+sarima(x,0,1,0,0,0,1,S=12)
+sarima(x,1,1,0,0,0,1,S=12)
+sarima(x,2,1,0,0,0,1,S=12)
+sarima(x,3,1,0,0,0,1,S=12)
+sarima(x,4,1,0,0,0,1,S=12)
+
+sarima(x,0,1,1,0,0,1,S=12)
+sarima(x,0,1,2,0,0,1,S=12)
+sarima(x,0,1,3,0,0,1,S=12)
+sarima(x,0,1,4,0,0,1,S=12)
+
+sarima(x,1,1,1,0,0,1,S=12)
+sarima(x,1,1,2,0,0,1,S=12)
+sarima(x,1,1,3,0,0,1,S=12)
+sarima(x,1,1,4,0,0,1,S=12)
+
+sarima(x,2,1,1,0,0,1,S=12)
+sarima(x,2,1,2,0,0,1,S=12)
+sarima(x,2,1,3,0,0,1,S=12)
+sarima(x,2,1,4,0,0,1,S=12)
+
+sarima(x,3,1,1,0,0,1,S=12)
+sarima(x,3,1,2,0,0,1,S=12)
+sarima(x,3,1,3,0,0,1,S=12)
+sarima(x,3,1,4,0,0,1,S=12)
+
+sarima(x,4,1,1,0,0,1,S=12)
+sarima(x,4,1,2,0,0,1,S=12)
+sarima(x,4,1,3,0,0,1,S=12)
+sarima(x,4,1,4,0,0,1,S=12)
+
+
+```
+
+
+```{r arimaSARMA(p,d,q,P,Q)}
+
+sarima(x,0,1,0,1,0,1,S=12)
+sarima(x,1,1,0,1,0,1,S=12)
+sarima(x,2,1,0,1,0,1,S=12)
+sarima(x,3,1,0,1,0,1,S=12)
+sarima(x,4,1,0,1,0,1,S=12)
+
+sarima(x,0,1,1,1,0,1,S=12)
+sarima(x,0,1,2,1,0,1,S=12)
+sarima(x,0,1,3,1,0,1,S=12)
+sarima(x,0,1,4,1,0,1,S=12)
+
+sarima(x,1,1,1,1,0,1,S=12)
+sarima(x,1,1,2,1,0,1,S=12)
+sarima(x,1,1,3,1,0,1,S=12)
+sarima(x,1,1,4,1,0,1,S=12)
+
+sarima(x,2,1,1,1,0,1,S=12)
+sarima(x,2,1,2,1,0,1,S=12)
+sarima(x,2,1,3,1,0,1,S=12)
+sarima(x,2,1,4,1,0,1,S=12)
+
+sarima(x,3,1,1,1,0,1,S=12)
+sarima(x,3,1,2,1,0,1,S=12)
+sarima(x,3,1,3,1,0,1,S=12)
+sarima(x,3,1,4,1,0,1,S=12)
+
+sarima(x,4,1,1,1,0,1,S=12)
+sarima(x,4,1,2,1,0,1,S=12)
+sarima(x,4,1,3,1,0,1,S=12)
+sarima(x,4,1,4,1,0,1,S=12)
+
+
+```
+
+Now no constant!!!!
+
+
+```{r SAR(12) no constant}
+
+
+
+#Fitting SARIMA only using a seasonal AR
+
+sarima(x,0,0,0,0,0,0,S=12,no.constant=T)
+sarima(x,1,0,0,1,0,0,S=12,no.constant=T)
+sarima(x,2,0,0,1,0,0,S=12,no.constant=T)
+sarima(x,3,0,0,1,0,0,S=12,no.constant=T)
+sarima(x,4,0,0,1,0,0,S=12,no.constant=T)
+
+sarima(x,0,0,1,1,0,0,S=12,no.constant=T)
+sarima(x,0,0,2,1,0,0,S=12,no.constant=T)
+sarima(x,0,0,3,1,0,0,S=12,no.constant=T)
+sarima(x,0,0,4,1,0,0,S=12,no.constant=T)
+
+sarima(x,1,0,1,1,0,0,S=12,no.constant=T)
+sarima(x,1,0,2,1,0,0,S=12,no.constant=T)
+sarima(x,1,0,3,1,0,0,S=12,no.constant=T)
+sarima(x,1,0,4,1,0,0,S=12,no.constant=T)
+
+sarima(x,2,0,1,1,0,0,S=12,no.constant=T)
+sarima(x,2,0,2,1,0,0,S=12,no.constant=T)
+sarima(x,2,0,3,1,0,0,S=12,no.constant=T)
+sarima(x,2,0,4,1,0,0,S=12,no.constant=T)
+
+sarima(x,3,0,1,1,0,0,S=12,no.constant=T)
+sarima(x,3,0,2,1,0,0,S=12,no.constant=T)
+sarima(x,3,0,3,1,0,0,S=12,no.constant=T)
+sarima(x,3,0,4,1,0,0,S=12,no.constant=T)
+
+sarima(x,4,0,1,1,0,0,S=12,no.constant=T)
+sarima(x,4,0,2,1,0,0,S=12,no.constant=T)
+sarima(x,4,0,3,1,0,0,S=12,no.constant=T)
+sarima(x,4,0,4,1,0,0,S=12,no.constant=T)
+
+
+
+```
+
+
+
+```{r SMA(12) no constant}
+
+sarima(x,0,0,0,0,0,1,S=12,no.constant=T)
+sarima(x,1,0,0,0,0,1,S=12,no.constant=T)
+sarima(x,2,0,0,0,0,1,S=12,no.constant=T)
+sarima(x,3,0,0,0,0,1,S=12,no.constant=T)
+sarima(x,4,0,0,0,0,1,S=12,no.constant=T)
+
+sarima(x,0,0,1,0,0,1,S=12,no.constant=T)
+sarima(x,0,0,2,0,0,1,S=12,no.constant=T)
+sarima(x,0,0,3,0,0,1,S=12,no.constant=T)
+sarima(x,0,0,4,0,0,1,S=12,no.constant=T)
+
+sarima(x,1,0,1,0,0,1,S=12,no.constant=T)
+sarima(x,1,0,2,0,0,1,S=12,no.constant=T)
+sarima(x,1,0,3,0,0,1,S=12,no.constant=T)
+sarima(x,1,0,4,0,0,1,S=12,no.constant=T)
+
+sarima(x,2,0,1,0,0,1,S=12,no.constant=T)
+sarima(x,2,0,2,0,0,1,S=12,no.constant=T)
+sarima(x,2,0,3,0,0,1,S=12,no.constant=T)
+sarima(x,2,0,4,0,0,1,S=12,no.constant=T)
+
+sarima(x,3,0,1,0,0,1,S=12,no.constant=T)
+sarima(x,3,0,2,0,0,1,S=12,no.constant=T)
+sarima(x,3,0,3,0,0,1,S=12,no.constant=T)
+sarima(x,3,0,4,0,0,1,S=12,no.constant=T)
+
+sarima(x,4,0,1,0,0,1,S=12,no.constant=T)
+sarima(x,4,0,2,0,0,1,S=12,no.constant=T)
+sarima(x,4,0,3,0,0,1,S=12,no.constant=T)
+sarima(x,4,0,4,0,0,1,S=12,no.constant=T)
+
+```
+
+```{r SARMA(12,12) no constant}
+
+sarima(x,0,0,0,1,0,1,S=12,no.constant=T)
+sarima(x,1,0,0,1,0,1,S=12,no.constant=T)
+sarima(x,2,0,0,1,0,1,S=12,no.constant=T)
+sarima(x,3,0,0,1,0,1,S=12,no.constant=T)
+sarima(x,4,0,0,1,0,1,S=12,no.constant=T)
+
+sarima(x,0,0,1,1,0,1,S=12,no.constant=T)
+sarima(x,0,0,2,1,0,1,S=12,no.constant=T)
+sarima(x,0,0,3,1,0,1,S=12,no.constant=T)
+sarima(x,0,0,4,1,0,1,S=12,no.constant=T)
+
+sarima(x,1,0,1,1,0,1,S=12,no.constant=T)
+sarima(x,1,0,2,1,0,1,S=12,no.constant=T)
+sarima(x,1,0,3,1,0,1,S=12,no.constant=T)
+sarima(x,1,0,4,1,0,1,S=12,no.constant=T)
+
+sarima(x,2,0,1,1,0,1,S=12,no.constant=T)
+sarima(x,2,0,2,1,0,1,S=12,no.constant=T)
+sarima(x,2,0,3,1,0,1,S=12,no.constant=T)
+sarima(x,2,0,4,1,0,1,S=12,no.constant=T)
+
+sarima(x,3,0,1,1,0,1,S=12,no.constant=T)
+sarima(x,3,0,2,1,0,1,S=12,no.constant=T)
+sarima(x,3,0,3,1,0,1,S=12,no.constant=T)
+sarima(x,3,0,4,1,0,1,S=12,no.constant=T)
+
+sarima(x,4,0,1,1,0,1,S=12,no.constant=T)
+sarima(x,4,0,2,1,0,1,S=12,no.constant=T)
+sarima(x,4,0,3,1,0,1,S=12,no.constant=T)
+sarima(x,4,0,4,1,0,1,S=12,no.constant=T)
+
+
+```
+
+```{r arimaSAR(p,d,q,P) no constant}
+
+sarima(x,0,1,0,0,0,0,S=12,no.constant=T)
+sarima(x,1,1,0,1,0,0,S=12,no.constant=T)
+sarima(x,2,1,0,1,0,0,S=12,no.constant=T)
+sarima(x,3,1,0,1,0,0,S=12,no.constant=T)
+sarima(x,4,1,0,1,0,0,S=12,no.constant=T)
+
+sarima(x,0,1,1,1,0,0,S=12,no.constant=T)
+sarima(x,0,1,2,1,0,0,S=12,no.constant=T)
+sarima(x,0,1,3,1,0,0,S=12,no.constant=T)
+sarima(x,0,1,4,1,0,0,S=12,no.constant=T)
+
+sarima(x,1,1,1,1,0,0,S=12,no.constant=T)
+sarima(x,1,1,2,1,0,0,S=12,no.constant=T)
+sarima(x,1,1,3,1,0,0,S=12,no.constant=T)
+sarima(x,1,1,4,1,0,0,S=12,no.constant=T)
+
+sarima(x,2,1,1,1,0,0,S=12,no.constant=T)
+sarima(x,2,1,2,1,0,0,S=12,no.constant=T)
+sarima(x,2,1,3,1,0,0,S=12,no.constant=T)
+sarima(x,2,1,4,1,0,0,S=12,no.constant=T)
+
+sarima(x,3,1,1,1,0,0,S=12,no.constant=T)
+sarima(x,3,1,2,1,0,0,S=12,no.constant=T)
+sarima(x,3,1,3,1,0,0,S=12,no.constant=T)
+sarima(x,3,1,4,1,0,0,S=12,no.constant=T)
+
+sarima(x,4,1,1,1,0,0,S=12,no.constant=T)
+sarima(x,4,1,2,1,0,0,S=12,no.constant=T)
+sarima(x,4,1,3,1,0,0,S=12,no.constant=T)
+sarima(x,4,1,4,1,0,0,S=12,no.constant=T)
+
+
+```
+
+
+```{r arimaSMA(p,d,q,Q)}
+
+sarima(x,0,1,0,0,0,1,S=12,no.constant=T)
+sarima(x,1,1,0,0,0,1,S=12,no.constant=T)
+sarima(x,2,1,0,0,0,1,S=12,no.constant=T)
+sarima(x,3,1,0,0,0,1,S=12,no.constant=T)
+sarima(x,4,1,0,0,0,1,S=12,no.constant=T)
+
+sarima(x,0,1,1,0,0,1,S=12,no.constant=T)
+sarima(x,0,1,2,0,0,1,S=12,no.constant=T)
+sarima(x,0,1,3,0,0,1,S=12,no.constant=T)
+sarima(x,0,1,4,0,0,1,S=12,no.constant=T)
+
+sarima(x,1,1,1,0,0,1,S=12,no.constant=T)
+sarima(x,1,1,2,0,0,1,S=12,no.constant=T)
+sarima(x,1,1,3,0,0,1,S=12,no.constant=T)
+sarima(x,1,1,4,0,0,1,S=12,no.constant=T)
+
+sarima(x,2,1,1,0,0,1,S=12,no.constant=T)
+sarima(x,2,1,2,0,0,1,S=12,no.constant=T)
+sarima(x,2,1,3,0,0,1,S=12,no.constant=T)
+sarima(x,2,1,4,0,0,1,S=12,no.constant=T)
+
+sarima(x,3,1,1,0,0,1,S=12,no.constant=T)
+sarima(x,3,1,2,0,0,1,S=12,no.constant=T)
+sarima(x,3,1,3,0,0,1,S=12,no.constant=T)
+sarima(x,3,1,4,0,0,1,S=12,no.constant=T)
+
+sarima(x,4,1,1,0,0,1,S=12,no.constant=T)
+sarima(x,4,1,2,0,0,1,S=12,no.constant=T)
+sarima(x,4,1,3,0,0,1,S=12,no.constant=T)
+sarima(x,4,1,4,0,0,1,S=12,no.constant=T)
+
+
+```
+
+
+```{r arimaSARMA(p,d,q,P,Q) no constant}
+
+sarima(x,0,1,0,1,0,1,S=12,no.constant=T)
+sarima(x,1,1,0,1,0,1,S=12,no.constant=T)
+sarima(x,2,1,0,1,0,1,S=12,no.constant=T)
+sarima(x,3,1,0,1,0,1,S=12,no.constant=T)
+sarima(x,4,1,0,1,0,1,S=12,no.constant=T)
+
+sarima(x,0,1,1,1,0,1,S=12,no.constant=T)
+sarima(x,0,1,2,1,0,1,S=12,no.constant=T)
+sarima(x,0,1,3,1,0,1,S=12,no.constant=T)
+sarima(x,0,1,4,1,0,1,S=12,no.constant=T)
+
+sarima(x,1,1,1,1,0,1,S=12,no.constant=T)
+sarima(x,1,1,2,1,0,1,S=12,no.constant=T)
+sarima(x,1,1,3,1,0,1,S=12,no.constant=T)
+sarima(x,1,1,4,1,0,1,S=12,no.constant=T)
+
+sarima(x,2,1,1,1,0,1,S=12,no.constant=T)
+sarima(x,2,1,2,1,0,1,S=12,no.constant=T)
+sarima(x,2,1,3,1,0,1,S=12,no.constant=T)
+sarima(x,2,1,4,1,0,1,S=12,no.constant=T)
+
+sarima(x,3,1,1,1,0,1,S=12,no.constant=T)
+sarima(x,3,1,2,1,0,1,S=12,no.constant=T)
+sarima(x,3,1,3,1,0,1,S=12,no.constant=T)
+sarima(x,3,1,4,1,0,1,S=12,no.constant=T)
+
+sarima(x,4,1,1,1,0,1,S=12,no.constant=T)
+sarima(x,4,1,2,1,0,1,S=12,no.constant=T)
+sarima(x,4,1,3,1,0,1,S=12,no.constant=T)
+sarima(x,4,1,4,1,0,1,S=12,no.constant=T)
+
+
+```
